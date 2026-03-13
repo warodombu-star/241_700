@@ -31,9 +31,9 @@ const submitData = async () => {
 
     let messageDOM = document.getElementById('message');
     try {
-        let interest = ''
+        let interests = ''
         for (let i = 0; i < interestDOMs.length; i++) {
-            interest += interestDOMs[i].value
+            interests += interestDOMs[i].value
             if (i != interestDOMs.length - 1) {
                 interest += ','
             }
@@ -45,7 +45,7 @@ const submitData = async () => {
             age: ageDOM.value,
             gender: genderDOM.value,
             description: descriptionDOM.value,
-            interests: interest
+            interests: interests
         }
         console.log('summitData', userData);
 
@@ -57,18 +57,21 @@ const submitData = async () => {
                 errors: error
             }
         }
+
         const response = await axios.post('http://localhost:8000/users', userData);
         console.log('response', response);
         messageDOM.innerText = 'บันทึกข้อมูลสำเร็จ';
         messageDOM.className = 'message success';
     } catch (error) {
-        console.log('Error message',error.message)
+        console.log('Error message', error.message)
         console.log('Error detail', error.errors)
-        //if (error.response) {
-        //  console.log('Error response:', error.response.data.message);
-        //}
+        if (error.response) {
+            console.log('Error response:', error.response.data.message);
+            error.message = error.response.data.message
+            error.errors = error.response.data.errors
+        }
         let htmlData = '<div>'
-        htmlData += `<div>'${error.message}'</div>`;
+        htmlData += `<div>${error.message}</div>`;
         htmlData += '<ul>';
         for (let i = 0; i < error.errors.length; i++) {
             htmlData += `<li>${error.errors[i]}</li>`
