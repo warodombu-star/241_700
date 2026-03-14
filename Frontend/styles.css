@@ -110,3 +110,11 @@ textarea {
     background-color: lightcoral;
     display: block;
 }
+
+.container a{
+    text-decoration: none;
+}
+
+.container a:hover{
+    color: #8777cf;
+}
